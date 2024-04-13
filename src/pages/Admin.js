@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AdminNav from "../components/AdminNav";
+import UploadForm from "../components/UploadForm";
 
 const Admin = () => {
   const flaggedUsers = [
@@ -101,9 +103,7 @@ const Admin = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col ">
-      <div className="w-full bg-green-primary text-white text-2xl font-semibold tracking-wide flex flex-row justify-between items-center p-3 h-12  ">
-        Dashboard
-      </div>
+        <AdminNav/>
       <div className="w-full p-4 flex flex-row h-full gap-8">
         <div className="w-4/12 flex flex-col gap-5 h-full">
           <div className="w-full flex flex-col h-3/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2">
@@ -194,28 +194,12 @@ const Admin = () => {
               <button className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-full">
                 + Add New Rule
               </button>
-              <button className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full">
+              <Link to={'/admin/rules'} className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full">
                 Edit Existing Rules
-              </button>
+              </Link>
             </div>
             <div className="text-2xl font-semibold">OR</div>
-            <div className="flex flex-col gap-4 w-full">
-              <label class="w-full h-4/6 flex flex-col items-center px-4 py-4 bg-green-light text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer text-orange-primary hover:text-green-primary transition duration-200 ease-in-out">
-                <svg
-                  class="w-6 h-6"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                </svg>
-                <span class="mt-2 leading-normal">Select a file</span>
-                <input type="file" class="hidden" />
-              </label>
-              <button className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full">
-                + Add New Rule
-              </button>
-            </div>
+              <UploadForm/>
           </div>
         </div>
       </div>
