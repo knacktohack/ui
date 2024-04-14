@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminNav from "../components/AdminNav";
 import UploadForm from "../components/UploadForm";
-
+import axios from "axios";
 const Admin = () => {
   const flaggedUsers = [
     {
@@ -59,6 +59,49 @@ const Admin = () => {
       timestamp: "2024-04-08T18:20:00Z",
     },
   ];
+  const [potentialThreats, setPotentialThreats] = useState([]);
+
+  useEffect(() => {
+    // Define an asynchronous function inside the useEffect hook
+    async function fetchPotentialThreats() {
+      try {
+        // Axios POST request to fetch potential threats
+        const response = await axios.post(
+          " http://127.0.0.1:8000/potential_violations",
+          {}
+        );
+        // Update state with the received data
+        setPotentialThreats(response.data);
+      } catch (error) {
+        // Handle error
+        console.error("Error fetching potential threats:", error);
+      }
+    }
+
+    // Call the asynchronous function
+    fetchPotentialThreats();
+  }, []);
+  useEffect(() => {
+    console.log(potentialThreats);
+  }, [potentialThreats]);
+
+  const handleViolation = async (id, accepted) => {
+    try {
+      // Send a POST request to handle the potential violation
+      const resp=await axios.post('http://127.0.0.1:8000/handle_potential_violation', {
+        id: id,
+        accepted: accepted
+      });
+
+      // Update the state or perform any other necessary actions
+      console.log(resp)
+      setPotentialThreats(prevThreats => prevThreats.filter(threat => threat.id !== id));
+      console.log(`Potential violation ${accepted ? 'added' : 'deleted'} successfully.`);
+    } catch (error) {
+      // Handle error
+      console.error('Error handling potential violation:', error);
+    }
+  };
 
   const queries = [
     {
@@ -103,7 +146,7 @@ const Admin = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col ">
-        <AdminNav/>
+      <AdminNav />
       <div className="w-full p-4 flex flex-row h-full gap-8">
         <div className="w-4/12 flex flex-col gap-5 h-full">
           <div className="w-full flex flex-col h-3/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2">
@@ -163,22 +206,38 @@ const Admin = () => {
         <div className="w-8/12 flex flex-col gap-5 h-full">
           <div className="w-full flex flex-col h-4/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2">
             <div className="flex flex-row justify-between items-center w-full text-3xl font-medium text-neutral-600 mb-3">
-              Recent Queries
+              Recent Potential Threats
             </div>
-            <div className="flex flex-col gap-3 divide-y-2 divide-slate-300">
-              {queries.slice(0, 4).map((item, index) => (
+            <div className="flex flex-col gap-3">
+              {potentialThreats.slice(0, 4).map((item, index) => (
                 <div
-                  key={index}
-                  className="flex flex-row justify-between items-center"
+                  key={item.id}
+                  className="flex flex-row justify-between items-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300"
                 >
-                  <div className="flex flex-col  overflow-ellipsis">
-                    <div className=" underline cursor-pointer">
-                      {item.heading}
+                  <div className="flex flex-col flex-grow overflow-hidden">
+                    <div className="text-lg font-semibold text-gray-900 mb-1">
+                      {item.question_name}
                     </div>
-                    <div>by {item.username}</div>
+                    <div className="text-sm text-gray-500 mb-2">
+                      {item.prompt}
+                    </div>
+                    <div className="text-lg font-semibold italic text-red-600 capitalize">
+                      Score: {item.score}
+                    </div>
                   </div>
-                  <div className="text-lg font-semibold italic text-red-600 capitalize">
-                    {item.action}
+                  <div className="flex items-center space-x-4">
+                    <button
+                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
+                      onClick={() => handleViolation(item.id, true)}
+                    >
+                      Add
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+                      onClick={() => handleViolation(item.id, false)}
+                    >
+                      Ignore
+                    </button>
                   </div>
                 </div>
               ))}
@@ -194,12 +253,15 @@ const Admin = () => {
               <button className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-full">
                 + Add New Rule
               </button>
-              <Link to={'/admin/rules'} className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full">
+              <Link
+                to={"/admin/rules"}
+                className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full"
+              >
                 Edit Existing Rules
               </Link>
             </div>
             <div className="text-2xl font-semibold">OR</div>
-              <UploadForm/>
+            <UploadForm />
           </div>
         </div>
       </div>
