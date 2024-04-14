@@ -1,27 +1,33 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const ChatSidebar = (props) => {
   const conversation_id = props.conversationId;
+    const user_id = "12345"
+  const [sessions ,setSessions] = useState([])
 
-  const chatHeads = [
-    {
-      conversation_id: "1",
-      title: "Stock Manipulation Strategies",
-    },
-    {
-      conversation_id: "2",
-      title: "Confidential Information Leak Investigation",
-    },
-    {
-      conversation_id: "3",
-      title: "Illegal Insider Trading Tips",
-    },
-    {
-      conversation_id: "4",
-      title: "Send anonymous email without getting tracked",
-    },
-  ];
+  const fetchSessions = async () =>{
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/history/${user_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setSessions(response.data.response);
+      } catch (error) {
+        console.log("Could not generate response");
+      }
+
+  }
+
+  useEffect(() => {
+    fetchSessions();
+  }, []);
+
 
   return (
     <div className="h-full w-1/5 border border-green-primary bg-green-primary flex flex-col gap-10 p-4 text-white tracking-wide">
@@ -42,7 +48,7 @@ const ChatSidebar = (props) => {
         <div className="text-lg font-medium tracking-wider">
           Previous Sessions
         </div>
-        {chatHeads.map((item, index) => (
+        {sessions.map((item, index) => (
           <Link
             key={index}
             to={`/chat/c/${item.conversation_id}`}
@@ -52,7 +58,7 @@ const ChatSidebar = (props) => {
                 : ""
             } `}
           >
-            {item.title}
+            {item.messages[0].content}
           </Link>
         ))}
       </div>

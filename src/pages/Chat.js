@@ -25,8 +25,8 @@ const Chat = () => {
 
     const reqBody = {
       prompt: prompt,
-      user_id: 12345,
-      conversation_id: 1,
+      user_id: "12345",
+      conversation_id: "1",
     };
 
     try {
