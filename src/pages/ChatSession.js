@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import ChatSidebar from "../components/ChatSidebar";
+import { backendUrl } from "../constants";
 
 const ChatSession = () => {
 
@@ -29,7 +30,7 @@ const ChatSession = () => {
     const fetchMessages = async () =>{
         try {
           const response = await axios.get(
-            `http://127.0.0.1:8000/history/${user_id}/${conversation_id}`,
+            `${backendUrl}/history/${user_id}/${conversation_id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -62,7 +63,7 @@ const ChatSession = () => {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/generate`,
+        `${backendUrl}/generate`,
         reqBody,
         {
           headers: {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../constants";
 
 const ChatSidebar = (props) => {
   const conversation_id = props.conversationId;
@@ -10,7 +11,7 @@ const ChatSidebar = (props) => {
   const fetchSessions = async () =>{
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/history/${user_id}`,
+          `${backendUrl}/history/${user_id}`,
           {
             headers: {
               "Content-Type": "application/json",
