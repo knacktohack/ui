@@ -1,36 +1,60 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import ChatSidebar from "../components/ChatSidebar";
 
 const Chat = () => {
-  const messages = [
-  
-    "Hey ChatGPT, I've been reading about insider trading lately. Can you explain what it is?",
+  const [messages, setMessages] = useState([]);
 
-    "Hi there! Insider trading is when someone buys or sells stocks based on non-public, material information about a company.",
+  const [prompt, setPrompt] = useState("");
 
-    "How does insider trading affect the stock market?",
+  const messagesEndRef = useRef(null);
 
-    "Insider trading can lead to unfair advantages, as those with insider information may profit at the expense of others.",
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-    "Is insider trading illegal everywhere?",
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-    "Yes, insider trading is illegal in most countries, as it undermines the integrity of the financial markets.",
+  const sendPrompt = async () => {
 
-    "What are the consequences of getting caught for insider trading?",
+    setMessages((prevMessages) => [...prevMessages, prompt]);
+    setPrompt("");
 
-    "The consequences for insider trading can be severe, including hefty fines, imprisonment, and permanent bans from trading.",
+    const reqBody = {
+      prompt: prompt,
+      user_id: 12345,
+      conversation_id: 1,
+    };
 
-    "Thanks for the information, ChatGPT! I'll make sure to steer clear of insider trading.",
-  ];
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/generate`,
+        reqBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setMessages((prevMessages) => [...prevMessages, response.data.response]);
+      scrollToBottom();
+    } catch (error) {
+      toast.error("Could not generate response");
+    }
+  };
 
   return (
     <div className="h-screen w-screen flex flex-row">
       <ChatSidebar />
-      <div className="h-full w-4/5 flex flex-col justify-start gap-10 items-center relative">
+      <div className="h-full w-4/5 flex flex-col justify-start gap-2 items-center relative">
         <div className="w-full bg-green-primary text-white text-2xl font-semibold tracking-wide flex flex-row justify-center items-center p-3 ">
           Mojo-GPT
         </div>
-        <div className="h-4/6 w-9/12 flex flex-col gap-4 justify-start text-white overflow-y-scroll p-2">
+        <div className="h-4/6 w-9/12 flex flex-col gap-4 justify-start text-white overflow-y-scroll px-4 py-8">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -43,10 +67,20 @@ const Chat = () => {
               {message}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
-        <div className="w-9/12 absolute bottom-10 flex flex-row gap-4">
-          <textarea className="border-2 border-green-primary rounded-md w-10/12 h-20 resize-none p-1 px-3 overflow-visible" />
-          <button className="w-1/12 bg-orange-primary h-10 text-white rounded-md">
+        <div className="w-9/12 absolute bottom-10 flex flex-row gap-4 pt-6 bg-white ">
+          <textarea
+            value={prompt}
+            className="border-2 border-green-primary rounded-md w-10/12 h-20 resize-none p-1 px-3 overflow-visible"
+            onChange={(e) => {
+              setPrompt(e.target.value);
+            }}
+          />
+          <button
+            onClick={sendPrompt}
+            className="w-1/12 bg-orange-primary h-10 text-white rounded-md"
+          >
             SEND
           </button>
         </div>
