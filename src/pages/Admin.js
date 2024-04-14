@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminNav from "../components/AdminNav";
 import UploadForm from "../components/UploadForm";
-import axios from "axios";
 const Admin = () => {
   const flaggedUsers = [
     {

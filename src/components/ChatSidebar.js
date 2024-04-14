@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { backendUrl } from "../constants";
+import NewChatButton from "./NewChatButton";
 
 const ChatSidebar = (props) => {
   const conversation_id = props.conversationId;
@@ -20,7 +21,7 @@ const ChatSidebar = (props) => {
         );
         setSessions(response.data.response);
       } catch (error) {
-        console.log("Could not generate response");
+        console.log("Could not fetch session heads");
       }
 
   }
@@ -37,12 +38,7 @@ const ChatSidebar = (props) => {
           adnan.khurshid@company.com
         </div>
 
-        <Link
-          to={`/chat`}
-          className={`text-center w-full p-2 border-2 pointer border-orange-primary hover:bg-orange-primary rounded-md transition duration-150 ease-in-out truncate `}
-        >
-          + New Chat
-        </Link>
+        <NewChatButton/>
       </div>
 
       <div className="flex flex-col gap-2">
@@ -59,7 +55,7 @@ const ChatSidebar = (props) => {
                 : ""
             } `}
           >
-            {item.messages[0].content}
+            {item.title}
           </Link>
         ))}
       </div>

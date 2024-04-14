@@ -51,15 +51,20 @@ const ChatSession = () => {
   }, [messages]);
 
   const sendPrompt = async () => {
-
-    setMessages((prevMessages) => [...prevMessages, prompt]);
+    const obj = {
+      'content' : prompt,
+      'type' : 'human'
+    }
+    setMessages((prevMessages) => [...prevMessages, obj]);
     setPrompt("");
 
     const reqBody = {
-      prompt: prompt,
-      user_id: 12345,
-      conversation_id: 1,
+      'prompt': prompt,
+      'user_id': '12345',
+      'conversation_id': conversation_id,
     };
+
+    console.log(reqBody)
 
     try {
       const response = await axios.post(
@@ -71,8 +76,8 @@ const ChatSession = () => {
           },
         }
       );
-
-      setMessages((prevMessages) => [...prevMessages, response.data.response]);
+      
+      setMessages((prevMessages) => [...prevMessages, {content:response.data.response,type:'ai'}]);
       scrollToBottom();
     } catch (error) {
       toast.error("Could not generate response");
@@ -87,6 +92,11 @@ const ChatSession = () => {
           Mojo-GPT
         </div>
         <div className="h-4/6 w-9/12 flex flex-col gap-4 justify-start text-white overflow-y-scroll px-4 py-8">
+          {messages.length===0 && (
+            <div className="text-neutral-600 text-2xl flex flex-col justify-center items-center">
+              Start by asking something...
+            </div>
+          )}
           {messages.map((item, index) => (
             <div
               key={index}
