@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import ChatSidebar from "../components/ChatSidebar";
+import { backendUrl } from "../constants";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -31,7 +32,7 @@ const Chat = () => {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/generate`,
+        `${backendUrl}/generate`,
         reqBody,
         {
           headers: {

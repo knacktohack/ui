@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { toast } from 'react-toastify';
+import { backendUrl } from "../constants";
 
 const UploadForm = () => {
   const [ruleFile, setRuleFile] = useState(null);
@@ -25,7 +26,7 @@ const UploadForm = () => {
     try {
       console.log(process.env.SERVER_URI);
       const response = await axios.post(
-        `http://127.0.0.1:8000/upload_rules`,
+        `${backendUrl}/upload_rules`,
         formData,
         {
           headers: {
@@ -59,7 +60,7 @@ const UploadForm = () => {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/upload_company_documents`,
+        `${backendUrl}/upload_company_documents`,
         formData,
         {
           headers: {
