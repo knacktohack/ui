@@ -90,7 +90,7 @@ const Admin = () => {
       // Send a POST request to handle the potential violation
       const resp=await axios.post('http://127.0.0.1:8000/handle_potential_violation', {
         id: id,
-        accepted: accepted
+        accepted:accepted
       });
 
       // Update the state or perform any other necessary actions
@@ -228,13 +228,13 @@ const Admin = () => {
                   <div className="flex items-center space-x-4">
                     <button
                       className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
-                      onClick={() => handleViolation(item.id, true)}
+                      onClick={() => handleViolation(item.id, "true")}
                     >
                       Add
                     </button>
                     <button
                       className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-                      onClick={() => handleViolation(item.id, false)}
+                      onClick={() => handleViolation(item.id, "false")}
                     >
                       Ignore
                     </button>
