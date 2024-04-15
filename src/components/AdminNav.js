@@ -2,6 +2,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from './../assets/logo.png';
 
 const AdminNav = (props) => {
     const header = props.header
@@ -10,6 +11,7 @@ const AdminNav = (props) => {
   return (
 
       <div className="w-full bg-green-primary text-white text-2xl font-semibold tracking-wide flex flex-row justify-between items-center p-3 h-12  ">
+        <img className='h-9' src={logo} alt="Example" />
         {header}
         <button onClick={() => setMenu(true)}>
           <MenuOutlinedIcon/>
