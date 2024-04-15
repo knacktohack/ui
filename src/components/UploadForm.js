@@ -17,14 +17,14 @@ const UploadForm = () => {
       return;
     }
 
-    if (selectedFile.type !== 'application/pdf') {
+    if (selectedFile.type !== 'application/pdf' && selectedFile.type !== 'text/plain') {
       toast.error('Please select a PDF file.');
       ruleInputRef.current.value = null;
       setRuleFile(null);
       return;
     }
     
-    const maxSize = 2 * 1024 * 1024;
+    const maxSize = 5 * 1024 * 1024;
     if(selectedFile.size>maxSize){
       setRuleFile(null);
       ruleInputRef.current.value = null;
@@ -66,13 +66,13 @@ const UploadForm = () => {
       setDocFile(null);
       return;
     }
-    if (selectedFile.type !== 'application/pdf') {
+    if (selectedFile.type !== 'application/pdf' && selectedFile.type !== 'text/plain') {
       toast.error('Please select a PDF file.');
       docInputRef.current.value = null;
       setRuleFile(null);
       return;
     }
-    const maxSize = 2 * 1024 * 1024;
+    const maxSize = 5 * 1024 * 1024;
     if(selectedFile.size>maxSize){
       setDocFile(null);
       docInputRef.current.value = null;
