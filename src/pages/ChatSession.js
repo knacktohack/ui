@@ -1,15 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import ChatSidebar from "../components/ChatSidebar";
 import { backendUrl } from "../constants";
+import userContext from "../contexts/UserContext";
 
 const ChatSession = () => {
   const location = useLocation();
   const currentUrl = location.pathname;
   const conversation_id = currentUrl.split('/')[3];
-  const user_id = "12345";
+  const {user} = useContext(userContext);
 
   const [messages, setMessages] = useState([]);
   const [prompt, setPrompt] = useState("");
@@ -25,7 +26,7 @@ const ChatSession = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `${backendUrl}/history/${user_id}/${conversation_id}`,
+          `${backendUrl}/history/${user.user_id}/${conversation_id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -38,7 +39,7 @@ const ChatSession = () => {
       }
     };
     fetchMessages();
-  }, [conversation_id]);
+  }, [conversation_id,user]);
 
   useEffect(() => {
     scrollToBottom();
@@ -56,7 +57,7 @@ const ChatSession = () => {
 
     const reqBody = {
       prompt: prompt,
-      user_id: "12345",
+      user_id: user.user_id,
       conversation_id: conversation_id,
     };
 

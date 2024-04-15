@@ -3,14 +3,14 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const AdminNav = () => {
-
+const AdminNav = (props) => {
+    const header = props.header
     const [menu, setMenu] = useState(false);
 
   return (
 
       <div className="w-full bg-green-primary text-white text-2xl font-semibold tracking-wide flex flex-row justify-between items-center p-3 h-12  ">
-        Dashboard
+        {header}
         <button onClick={() => setMenu(true)}>
           <MenuOutlinedIcon/>
         </button>
@@ -30,6 +30,7 @@ const AdminNav = () => {
             <ul className="flex flex-col gap-4 text-yellow-primary text-lg 2xl:text-xl font-medium">
               <Link to={'/admin'}>Home</Link>
               <Link to={'/admin/rules'}>Rules</Link>
+              <Link to={'/notifications'}>Notifications</Link>
             </ul>
           </>
         ) : (

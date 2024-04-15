@@ -1,65 +1,32 @@
+import { Box, Modal } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getUserDataById } from "../UserData";
 import AdminNav from "../components/AdminNav";
 import UploadForm from "../components/UploadForm";
-const Admin = () => {
-  const flaggedUsers = [
-    {
-      username: "adnan.khurshid@company.com",
-      risk: "very high",
-    },
-    {
-      username: "aditya.ganguly@company.com",
-      risk: "high",
-    },
-    {
-      username: "kabirraj.singh@company.com",
-      risk: "high",
-    },
-    {
-      username: "amartya.chakraborty@company.com",
-      risk: "high",
-    },
-    {
-      username: "amartya.chakraborty@company.com",
-      risk: "high",
-    },
-  ];
+import { backendUrl } from "../constants";
 
-  const notifications = [
-    {
-      id: 123,
-      username: "aditya.ganguly@company.com",
-      rule: 3,
-      timestamp: "2024-04-12T09:30:00Z",
-    },
-    {
-      id: 124,
-      username: "john.doe@example.com",
-      rule: 1,
-      timestamp: "2024-04-11T15:45:00Z",
-    },
-    {
-      id: 125,
-      username: "jane.smith@example.com",
-      rule: 2,
-      timestamp: "2024-04-10T20:00:00Z",
-    },
-    {
-      id: 126,
-      username: "bob.johnson@example.com",
-      rule: 3,
-      timestamp: "2024-04-09T10:15:00Z",
-    },
-    {
-      id: 127,
-      username: "emma.watson@example.com",
-      rule: 1,
-      timestamp: "2024-04-08T18:20:00Z",
-    },
-  ];
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  boxShadow: 12,
+};
+
+const Admin = () => {
+
+
+
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
   const [potentialThreats, setPotentialThreats] = useState([]);
+
+  const [flaggedUsers,setFlaggedUsers] = useState([])
+
+  const [violations,setViolations] = useState([]);
 
   useEffect(() => {
     // Define an asynchronous function inside the useEffect hook
@@ -70,7 +37,8 @@ const Admin = () => {
           " http://127.0.0.1:8000/potential_violations",
           {}
         );
-        // Update state with the received data
+
+
         setPotentialThreats(response.data);
       } catch (error) {
         // Handle error
@@ -78,8 +46,54 @@ const Admin = () => {
       }
     }
 
+    async function fetchFlaggedUsers(){
+      try {
+        const response = await axios.get(
+          `${backendUrl}/get_risk`,
+        );
+        const data = response.data
+        const users = []
+
+        data.forEach(item => {
+          const user = getUserDataById(item.user_id);
+          if (user) {
+              user.severity_score = item.severity_score;
+              if(item.severity_score>=8) user.risk = 'very high'
+              else user.risk = 'high'
+              users.push(user);
+          }
+      });
+        setFlaggedUsers(users);
+      } catch (error) {
+        // Handle error
+        console.error("Error fetching potential flagged users:", error);
+      }
+    }
+
+    async function fetchViolations(){
+      try {
+        const response = await axios.get(
+          `${backendUrl}/get_violations`
+        );
+        const data = response.data;
+        data.forEach(item => {
+          const user = getUserDataById(String(item.user_id));
+          if (user) {
+            item.user_email = user.user_email;
+          }
+      });
+        setViolations(data)
+        console.log(data)
+      } catch (error) {
+        // Handle error
+        console.error("Error fetching potential flagged users:", error);
+      }
+    }
+
     // Call the asynchronous function
     fetchPotentialThreats();
+    fetchFlaggedUsers();
+    fetchViolations();
   }, []);
   useEffect(() => {
     console.log(potentialThreats);
@@ -146,7 +160,40 @@ const Admin = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col ">
-      <AdminNav />
+      <AdminNav header={"Dashboard"}/>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={style}
+          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll rounded-lg"
+        >
+          {flaggedUsers.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-row justify-between items-center w-full text-neutral-600"
+              >
+                <Link className="text-lg underline hover:text-orange-primary">
+                  {item.user_email}
+                </Link>
+                <div
+                  className={`capitalize ${
+                    item.risk === "very high"
+                      ? "text-red-600"
+                      : item.risk === "high"
+                      ? "text-orange-400"
+                      : ""
+                  } font-semibold  text-sm min-w-20 text-center tracking-wide`}
+                >
+                  {item.risk}
+                </div>
+              </div>
+            ))}
+        </Box>
+      </Modal>
       <div className="w-full p-4 flex flex-row h-full gap-8">
         <div className="w-4/12 flex flex-col gap-5 h-full">
           <div className="w-full flex flex-col h-3/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2">
@@ -160,7 +207,7 @@ const Admin = () => {
                 className="flex flex-row justify-between items-center w-full text-neutral-600"
               >
                 <Link className="text-lg underline hover:text-orange-primary">
-                  {item.username}
+                  {item.user_email}
                 </Link>
                 <div
                   className={`capitalize ${
@@ -176,7 +223,7 @@ const Admin = () => {
               </div>
             ))}
             {flaggedUsers.length > 4 && (
-              <div className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
+              <div onClick={()=>{setOpen(true)}} className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
                 See All
               </div>
             )}
@@ -185,21 +232,21 @@ const Admin = () => {
             <div className="flex flex-row justify-between items-center w-full text-2xl font-medium text-neutral-800 mb-3">
               <div>Notifications</div>{" "}
             </div>
-            {notifications.slice(0, 4).map((item, index) => (
+            {violations.slice(0, 4).map((item, index) => (
               <div
-                key={index}
+                key={item.id}
                 className="flex flex-row justify-between items-center w-full text-neutral-600 "
               >
-                <Link className=" hover:text-orange-primary">
-                  Violation of Rule #{item.rule} by {item.username}
+                <Link to={'/notifications'} className=" hover:text-orange-primary underline cursor-pointer truncate">
+                   Violation by {item.user_email} of Priority {item.violation_priority} on {item.violation_question}
                 </Link>
-                <div>{calculateHoursDifference(item.timestamp)}h</div>
+                
               </div>
             ))}
-            {notifications.length > 4 && (
-              <div className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
+            {violations.length > 4 && (
+              <Link to='/notifications' className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
                 See All
-              </div>
+              </Link>
             )}
           </div>
         </div>

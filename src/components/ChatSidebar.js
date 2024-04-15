@@ -1,16 +1,21 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { backendUrl } from "../constants";
+import userContext from "../contexts/UserContext";
 import NewChatButton from "./NewChatButton";
+import SelectUser from "./SelectUser";
 
 const ChatSidebar = ({ conversationId, shouldRerender }) => {
-  const user_id = "12345";
+  const {user} = useContext(userContext);
   const [sessions, setSessions] = useState([]);
 
+
+  useEffect(() => {
+    
   const fetchSessions = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/history/${user_id}`, {
+      const response = await axios.get(`${backendUrl}/history/${user.user_id}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -20,17 +25,13 @@ const ChatSidebar = ({ conversationId, shouldRerender }) => {
       console.log("Could not fetch session heads");
     }
   };
-
-  useEffect(() => {
     fetchSessions();
-  }, [shouldRerender]); // Re-fetch sessions when shouldRerender changes
+  }, [shouldRerender,user]); // Re-fetch sessions when shouldRerender changes
 
   return (
     <div className="h-full w-1/5 border border-green-primary bg-green-primary flex flex-col gap-10 p-2 text-white tracking-wide">
       <div className="flex flex-col w-full gap-4 px-2">
-        <div className="w-full flex flex-row justify-center items-center border-2 border-orange-primary rounded-md p-2">
-          adnan.khurshid@company.com
-        </div>
+        <SelectUser/>
 
         <NewChatButton />
       </div>
