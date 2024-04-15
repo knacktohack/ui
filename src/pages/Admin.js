@@ -16,17 +16,18 @@ const style = {
 };
 
 const Admin = () => {
-
-
-
-
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [openFileModal, setOpenFileModal] = useState(false);
+  const handleCloseFileModal = () => setOpenFileModal(false);
   const [potentialThreats, setPotentialThreats] = useState([]);
 
-  const [flaggedUsers,setFlaggedUsers] = useState([])
+  const [flaggedUsers, setFlaggedUsers] = useState([]);
 
-  const [violations,setViolations] = useState([]);
+  const [violations, setViolations] = useState([]);
+
+  const [ruleFiles, setRuleFiles] = useState([]);
+  const [dataFiles, setDataFiles] = useState([]);
 
   useEffect(() => {
     // Define an asynchronous function inside the useEffect hook
@@ -34,10 +35,9 @@ const Admin = () => {
       try {
         // Axios POST request to fetch potential threats
         const response = await axios.post(
-          " http://127.0.0.1:8000/potential_violations",
+          `${backendUrl}/potential_violations`,
           {}
         );
-
 
         setPotentialThreats(response.data);
       } catch (error) {
@@ -46,23 +46,21 @@ const Admin = () => {
       }
     }
 
-    async function fetchFlaggedUsers(){
+    async function fetchFlaggedUsers() {
       try {
-        const response = await axios.get(
-          `${backendUrl}/get_risk`,
-        );
-        const data = response.data
-        const users = []
+        const response = await axios.get(`${backendUrl}/get_risk`);
+        const data = response.data;
+        const users = [];
 
-        data.forEach(item => {
+        data.forEach((item) => {
           const user = getUserDataById(item.user_id);
           if (user) {
-              user.severity_score = item.severity_score;
-              if(item.severity_score>=8) user.risk = 'very high'
-              else user.risk = 'high'
-              users.push(user);
+            user.severity_score = item.severity_score;
+            if (item.severity_score >= 8) user.risk = "very high";
+            else user.risk = "high";
+            users.push(user);
           }
-      });
+        });
         setFlaggedUsers(users);
       } catch (error) {
         // Handle error
@@ -70,23 +68,60 @@ const Admin = () => {
       }
     }
 
-    async function fetchViolations(){
+    async function fetchViolations() {
       try {
-        const response = await axios.get(
-          `${backendUrl}/get_violations`
-        );
+        const response = await axios.get(`${backendUrl}/get_violations`);
         const data = response.data;
-        data.forEach(item => {
+        data.forEach((item) => {
           const user = getUserDataById(String(item.user_id));
           if (user) {
             item.user_email = user.user_email;
           }
-      });
-        setViolations(data)
-        console.log(data)
+        });
+        setViolations(data);
+        console.log(data);
       } catch (error) {
         // Handle error
         console.error("Error fetching potential flagged users:", error);
+      }
+    }
+
+    async function fetchRulesFiles() {
+      try {
+        const response = await axios.post(
+          `${backendUrl}/rules_files`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = response.data;
+        setRuleFiles(data);
+        console.log(data);
+      } catch (error) {
+        // Handle error
+        console.error("Error fetching Rules Files:", error);
+      }
+    }
+    async function fetchDataFiles() {
+      try {
+        const response = await axios.post(
+          `${backendUrl}/data_files`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = response.data;
+        setDataFiles(data);
+        console.log(data);
+      } catch (error) {
+        // Handle error
+        console.error("Error fetching Rules Files:", error);
       }
     }
 
@@ -94,6 +129,8 @@ const Admin = () => {
     fetchPotentialThreats();
     fetchFlaggedUsers();
     fetchViolations();
+    fetchDataFiles();
+    fetchRulesFiles();
   }, []);
   useEffect(() => {
     console.log(potentialThreats);
@@ -102,53 +139,27 @@ const Admin = () => {
   const handleViolation = async (id, accepted) => {
     try {
       // Send a POST request to handle the potential violation
-      const resp=await axios.post('http://127.0.0.1:8000/handle_potential_violation', {
-        id: id,
-        accepted:accepted
-      });
+      const resp = await axios.post(
+        `${backendUrl}/handle_potential_violation`,
+        {
+          id: id,
+          accepted: accepted,
+        }
+      );
 
       // Update the state or perform any other necessary actions
-      console.log(resp)
-      setPotentialThreats(prevThreats => prevThreats.filter(threat => threat.id !== id));
-      console.log(`Potential violation ${accepted ? 'added' : 'deleted'} successfully.`);
+      console.log(resp);
+      setPotentialThreats((prevThreats) =>
+        prevThreats.filter((threat) => threat.id !== id)
+      );
+      console.log(
+        `Potential violation ${accepted ? "added" : "deleted"} successfully.`
+      );
     } catch (error) {
       // Handle error
-      console.error('Error handling potential violation:', error);
+      console.error("Error handling potential violation:", error);
     }
   };
-
-  const queries = [
-    {
-      id: 123,
-      username: "adnan.khurshid@company.com",
-      heading: "How to send an email to someone without any trace",
-      action: "blocked",
-    },
-    {
-      id: 124,
-      username: "john.doe@company.com",
-      heading: "Anonymous Insider Trading guide",
-      action: "blocked",
-    },
-    {
-      id: 125,
-      username: "jane.smith@company.com",
-      heading: "Accessing the dark web safely",
-      action: "sanitized",
-    },
-    {
-      id: 126,
-      username: "sam.jones@company.com",
-      heading: "How to get personal details of another employee in my company",
-      action: "blocked",
-    },
-    {
-      id: 127,
-      username: "emily.brown@company.com",
-      heading: "Illegal streaming websites list",
-      action: "blocked",
-    },
-  ];
 
   function calculateHoursDifference(timestamp) {
     const currentTime = new Date();
@@ -160,7 +171,7 @@ const Admin = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col ">
-      <AdminNav header={"Dashboard"}/>
+      <AdminNav header={"Dashboard"} />
       <Modal
         open={open}
         onClose={handleClose}
@@ -172,26 +183,52 @@ const Admin = () => {
           className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll rounded-lg"
         >
           {flaggedUsers.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-row justify-between items-center w-full text-neutral-600"
+            >
+              <Link className="text-lg underline hover:text-orange-primary">
+                {item.user_email}
+              </Link>
               <div
-                key={index}
-                className="flex flex-row justify-between items-center w-full text-neutral-600"
+                className={`capitalize ${
+                  item.risk === "very high"
+                    ? "text-red-600"
+                    : item.risk === "high"
+                    ? "text-orange-400"
+                    : ""
+                } font-semibold  text-sm min-w-20 text-center tracking-wide`}
               >
-                <Link className="text-lg underline hover:text-orange-primary">
-                  {item.user_email}
-                </Link>
-                <div
-                  className={`capitalize ${
-                    item.risk === "very high"
-                      ? "text-red-600"
-                      : item.risk === "high"
-                      ? "text-orange-400"
-                      : ""
-                  } font-semibold  text-sm min-w-20 text-center tracking-wide`}
-                >
-                  {item.risk}
-                </div>
+                {item.risk}
               </div>
-            ))}
+            </div>
+          ))}
+        </Box>
+      </Modal>
+      <Modal
+        open={openFileModal}
+        onClose={handleCloseFileModal}
+        aria-labelledby="modal-modal-title2"
+        aria-describedby="modal-modal-description2"
+      >
+        <Box
+          sx={style}
+          className=" w-8/12 bg-green-light border-2 text-neutral-600 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll overflow-x-hidden rounded-lg"
+        >
+          {ruleFiles.length && <div className="text-2xl font-semibold">Rules Files</div>}
+          {ruleFiles.map((item, index) => (
+            <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary rounded-md p-2">
+              <div className="text-lg font-semibold">Filename : {item.file_name}</div>
+              <Link className="px-4 py-1 bg-orange-primary text-white text-lg rounded-md" to={item.url} >Download</Link>
+            </div>
+          ))}
+          {dataFiles.length>0 && <div className="text-2xl font-semibold">Data Files</div>}
+          {dataFiles.map((item, index) => (
+            <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary rounded-md p-2">
+              <div className="text-lg font-semibold">Filename : {item.file_name}</div>
+              <Link className="px-4 py-1 bg-orange-primary text-white text-lg rounded-md" to={item.url} >Download</Link>
+            </div>
+          ))}
         </Box>
       </Modal>
       <div className="w-full p-4 flex flex-row h-full gap-8">
@@ -223,7 +260,12 @@ const Admin = () => {
               </div>
             ))}
             {flaggedUsers.length > 4 && (
-              <div onClick={()=>{setOpen(true)}} className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
+              <div
+                onClick={() => {
+                  setOpen(true);
+                }}
+                className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider"
+              >
                 See All
               </div>
             )}
@@ -237,14 +279,20 @@ const Admin = () => {
                 key={item.id}
                 className="flex flex-row justify-between items-center w-full text-neutral-600 "
               >
-                <Link to={'/notifications'} className=" hover:text-orange-primary underline cursor-pointer truncate">
-                   Violation by {item.user_email} of Priority {item.violation_priority} on {item.violation_question}
+                <Link
+                  to={"/notifications"}
+                  className=" hover:text-orange-primary underline cursor-pointer truncate"
+                >
+                  Violation by {item.user_email} of Priority{" "}
+                  {item.violation_priority} on {item.violation_question}
                 </Link>
-                
               </div>
             ))}
             {violations.length > 4 && (
-              <Link to='/notifications' className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
+              <Link
+                to="/notifications"
+                className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider"
+              >
                 See All
               </Link>
             )}
@@ -289,7 +337,7 @@ const Admin = () => {
                 </div>
               ))}
             </div>
-            {queries.length > 4 && (
+            {potentialThreats.length > 4 && (
               <div className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
                 See All
               </div>
@@ -297,15 +345,15 @@ const Admin = () => {
           </div>
           <div className="w-full flex flex-row h-2/6 justify-center items-center  border-2 px-6 py-4 gap-10 ">
             <div className="flex flex-col justify-evenly items-center w-4/12 gap-5">
-              <button className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-full">
-                + Add New Rule
-              </button>
               <Link
                 to={"/admin/rules"}
-                className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full"
+                className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full text-center"
               >
-                Edit Existing Rules
+                Edit Rules
               </Link>
+              <button onClick={()=>{setOpenFileModal(true)}} className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-full text-center">
+                Preview Files
+              </button>
             </div>
             <div className="text-2xl font-semibold">OR</div>
             <UploadForm />

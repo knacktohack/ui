@@ -5,6 +5,7 @@ import UserState from "./contexts/UserState";
 import Admin from "./pages/Admin";
 import Chat from "./pages/Chat";
 import ChatSession from "./pages/ChatSession";
+import Files from "./pages/Files";
 import NotificationsPage from "./pages/NotificationsPage";
 import Rules from "./pages/Rules";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/rules" element={<Rules />} />
           <Route path="/notifications" element={<NotificationsPage/>}></Route>
+          <Route path="/files-preview" element={<Files/>}></Route>
         </Routes>
         <ToastContainer />
       </BrowserRouter>
