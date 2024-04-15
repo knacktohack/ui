@@ -215,7 +215,7 @@ const Admin = () => {
           sx={style}
           className=" w-8/12 bg-green-light border-2 text-neutral-600 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll overflow-x-hidden "
         >
-          {ruleFiles.length && <div className="text-2xl font-semibold">Rules Files</div>}
+          {ruleFiles.length>0 && <div className="text-2xl font-semibold">Rules Files</div>}
           {ruleFiles.map((item, index) => (
             <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary  p-2">
               <div className="text-lg font-semibold">Filename : {item.file_name}</div>
