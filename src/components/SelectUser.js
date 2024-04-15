@@ -3,13 +3,12 @@ import { userData } from "../UserData";
 import userContext from "../contexts/UserContext";
 
 const SelectUser = () => {
-  const { setUser } = useContext(userContext);
+  const { user, setUser } = useContext(userContext);
 
   const handleUserChange = (event) => {
     const selectedUserEmail = event.target.value;
     const selectedUser = userData.find((item) => item.user_email === selectedUserEmail);
     setUser(selectedUser);
-    console.log(selectedUser)
   };
 
   return (

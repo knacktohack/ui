@@ -31,7 +31,6 @@ const AdminNav = (props) => {
               <Link to={'/admin'}>Home</Link>
               <Link to={'/admin/rules'}>Rules</Link>
               <Link to={'/notifications'}>Notifications</Link>
-              <Link to={'/files-preview'}>Files Preview</Link>
             </ul>
           </>
         ) : (
