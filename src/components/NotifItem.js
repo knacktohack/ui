@@ -29,6 +29,7 @@ const NotifItem = (props) => {
           </div>
           <div>User Email : {item.user_email}</div>
           <div>Risk Score : {item.score}</div>
+          <div>Prompt : {item.prompt}</div>
           <div>Violation Priority : {item.violation_priority}</div>
           <div>Violation Question : {item.violation_question}</div>
           <div>Organisation : {item.organization_name}</div>

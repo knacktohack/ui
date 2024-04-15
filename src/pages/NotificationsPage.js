@@ -19,7 +19,7 @@ const NotificationsPage = () => {
             item.user_email = user.user_email;
           }
         });
-        setViolations(data);
+        setViolations(data.reverse());
         console.log(data);
       } catch (error) {
         // Handle error
