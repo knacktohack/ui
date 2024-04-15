@@ -5,6 +5,7 @@ import UserState from "./contexts/UserState";
 import Admin from "./pages/Admin";
 import Chat from "./pages/Chat";
 import ChatSession from "./pages/ChatSession";
+import Home from "./pages/Home";
 import NotificationsPage from "./pages/NotificationsPage";
 import Rules from "./pages/Rules";
 
@@ -13,6 +14,7 @@ function App() {
     <UserState>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/chat/c/:chatId" element={<ChatSession />} />
           <Route path="/admin" element={<Admin />} />
