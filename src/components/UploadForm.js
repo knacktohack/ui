@@ -16,6 +16,13 @@ const UploadForm = () => {
       setRuleFile(null);
       return;
     }
+    const maxSize = 2 * 1024 * 1024;
+    if(selectedFile.size>maxSize){
+      setRuleFile(null);
+      ruleInputRef.current.value = null;
+      toast.error("The file size should be less than 2 MB")
+    }
+
     setRuleFile(selectedFile);
   };
 
@@ -50,6 +57,12 @@ const UploadForm = () => {
     if (!selectedFile) {
       setDocFile(null);
       return;
+    }
+    const maxSize = 2 * 1024 * 1024;
+    if(selectedFile.size>maxSize){
+      setDocFile(null);
+      docInputRef.current.value = null;
+      toast.error("The file size should be less than 2 MB")
     }
     setDocFile(selectedFile);
   };
