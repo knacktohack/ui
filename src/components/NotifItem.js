@@ -22,7 +22,7 @@ const NotifItem = (props) => {
       >
         <Box
           sx={style}
-          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll rounded-lg text-lg text-neutral-600 font-medium"
+          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll  text-lg text-neutral-600 font-medium"
         >
           <div className="text-2xl font-semibold text-orange-primary self-center">
             Violation Details
@@ -38,7 +38,7 @@ const NotifItem = (props) => {
         onClick={() => {
           setOpen(true);
         }}
-        className="w-full flex flex-row justify-between items-center bg-green-light border rounded-md p-4 text-lg font-medium text-neutral-700 cursor-pointer hover:bg-neutral-200"
+        className="w-full flex flex-row justify-between items-center bg-green-light border  p-4 text-lg font-medium text-neutral-700 cursor-pointer hover:bg-neutral-200"
       >
         <div className=" hover:text-orange-primary underline cursor-pointer">
           Violation by {item.user_email} of Priority {item.violation_priority}{" "}

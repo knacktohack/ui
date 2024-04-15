@@ -27,7 +27,7 @@ const NewChatButton = () => {
   return (
     <button
       onClick={onClickHandler}
-      className="bg-orange-primary px-6 py-2 text-lg tracking-wide rounded-md text-white hover:bg-orange-700"
+      className="bg-orange-primary px-6 py-2 text-lg tracking-wide  text-white hover:bg-orange-700"
     >
       Start New Chat
     </button>

@@ -86,7 +86,7 @@ const UploadForm = () => {
         </div>
 
         <button
-          className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-4/12"
+          className="text-white py-2 px-4 text-xl bg-orange-primary  w-4/12"
           onClick={handleRuleFileUpload}
         >
           Upload Rules
@@ -97,7 +97,7 @@ const UploadForm = () => {
           <input ref={docInputRef} type="file" onChange={handleDocFileChange} />
         </div>
         <button
-          className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-4/12"
+          className="text-white py-2 px-4 text-xl bg-green-primary  w-4/12"
           onClick={handleDocFileUpload}
         >
           Upload Doc

@@ -180,7 +180,7 @@ const Admin = () => {
       >
         <Box
           sx={style}
-          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll rounded-lg"
+          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll "
         >
           {flaggedUsers.map((item, index) => (
             <div
@@ -213,27 +213,27 @@ const Admin = () => {
       >
         <Box
           sx={style}
-          className=" w-8/12 bg-green-light border-2 text-neutral-600 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll overflow-x-hidden rounded-lg"
+          className=" w-8/12 bg-green-light border-2 text-neutral-600 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll overflow-x-hidden "
         >
           {ruleFiles.length && <div className="text-2xl font-semibold">Rules Files</div>}
           {ruleFiles.map((item, index) => (
-            <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary rounded-md p-2">
+            <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary  p-2">
               <div className="text-lg font-semibold">Filename : {item.file_name}</div>
-              <Link className="px-4 py-1 bg-orange-primary text-white text-lg rounded-md" to={item.url} >Download</Link>
+              <Link className="px-4 py-1 bg-orange-primary text-white text-lg " to={item.url} >Download</Link>
             </div>
           ))}
           {dataFiles.length>0 && <div className="text-2xl font-semibold">Data Files</div>}
           {dataFiles.map((item, index) => (
-            <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary rounded-md p-2">
+            <div className="flex flex-row justify-between items-center gap-10 w-full border-2 border-green-primary  p-2">
               <div className="text-lg font-semibold">Filename : {item.file_name}</div>
-              <Link className="px-4 py-1 bg-orange-primary text-white text-lg rounded-md" to={item.url} >Download</Link>
+              <Link className="px-4 py-1 bg-orange-primary text-white text-lg " to={item.url} >Download</Link>
             </div>
           ))}
         </Box>
       </Modal>
       <div className="w-full p-4 flex flex-row h-full gap-8">
         <div className="w-4/12 flex flex-col gap-5 h-full">
-          <div className="w-full flex flex-col h-3/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2">
+          <div className="w-full flex flex-col h-3/6 bg-green-light  border-2 px-6 py-4 gap-2">
             <div className="flex flex-row justify-between items-center w-full text-2xl font-medium text-neutral-600 mb-3">
               <div>Flagged users</div>{" "}
               <div className="min-w-20 text-center">Risk</div>
@@ -264,13 +264,13 @@ const Admin = () => {
                 onClick={() => {
                   setOpen(true);
                 }}
-                className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider"
+                className="bg-orange-primary text-white text-xl max-w-fit mt-4  p-4 py-2 tracking-wider"
               >
                 See All
               </div>
             )}
           </div>
-          <div className="w-full flex flex-col h-3/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2 ">
+          <div className="w-full flex flex-col h-3/6 bg-green-light  border-2 px-6 py-4 gap-2 ">
             <div className="flex flex-row justify-between items-center w-full text-2xl font-medium text-neutral-800 mb-3">
               <div>Notifications</div>{" "}
             </div>
@@ -291,7 +291,7 @@ const Admin = () => {
             {violations.length > 4 && (
               <Link
                 to="/notifications"
-                className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider"
+                className="bg-orange-primary text-white text-xl max-w-fit mt-4  p-4 py-2 tracking-wider"
               >
                 See All
               </Link>
@@ -299,7 +299,7 @@ const Admin = () => {
           </div>
         </div>
         <div className="w-8/12 flex flex-col gap-5 h-full">
-          <div className="w-full flex flex-col h-4/6 bg-green-light rounded-md border-2 px-6 py-4 gap-2">
+          <div className="w-full flex flex-col h-4/6 bg-green-light  border-2 px-6 py-4 gap-2">
             <div className="flex flex-row justify-between items-center w-full text-3xl font-medium text-neutral-600 mb-3">
               Recent Potential Threats
             </div>
@@ -307,7 +307,7 @@ const Admin = () => {
               {potentialThreats.slice(0, 4).map((item, index) => (
                 <div
                   key={item.id}
-                  className="flex flex-row justify-between items-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300"
+                  className="flex flex-row justify-between items-center p-4 bg-white  shadow-md hover:shadow-lg transition duration-300"
                 >
                   <div className="flex flex-col flex-grow overflow-hidden">
                     <div className="text-lg font-semibold text-gray-900 mb-1">
@@ -322,13 +322,13 @@ const Admin = () => {
                   </div>
                   <div className="flex items-center space-x-4">
                     <button
-                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
+                      className="px-4 py-2 bg-green-500 text-white  hover:bg-green-600 focus:outline-none focus:bg-green-600"
                       onClick={() => handleViolation(item.id, "true")}
                     >
                       Add
                     </button>
                     <button
-                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+                      className="px-4 py-2 bg-red-500 text-white  hover:bg-red-600 focus:outline-none focus:bg-red-600"
                       onClick={() => handleViolation(item.id, "false")}
                     >
                       Ignore
@@ -338,7 +338,7 @@ const Admin = () => {
               ))}
             </div>
             {potentialThreats.length > 4 && (
-              <div className="bg-orange-primary text-white text-xl max-w-fit mt-4 rounded-md p-4 py-2 tracking-wider">
+              <div className="bg-orange-primary text-white text-xl max-w-fit mt-4  p-4 py-2 tracking-wider">
                 See All
               </div>
             )}
@@ -347,11 +347,11 @@ const Admin = () => {
             <div className="flex flex-col justify-evenly items-center w-4/12 gap-5">
               <Link
                 to={"/admin/rules"}
-                className="text-white py-2 px-4 text-xl bg-green-primary rounded-md w-full text-center"
+                className="text-white py-2 px-4 text-xl bg-green-primary  w-full text-center"
               >
                 Edit Rules
               </Link>
-              <button onClick={()=>{setOpenFileModal(true)}} className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-full text-center">
+              <button onClick={()=>{setOpenFileModal(true)}} className="text-white py-2 px-4 text-xl bg-orange-primary  w-full text-center">
                 Preview Files
               </button>
             </div>

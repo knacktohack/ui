@@ -13,7 +13,7 @@ const SelectUser = () => {
 
   return (
     <select
-      className="rounded-md h-10 cursor-pointer p-2 text-white bg-orange-primary"
+      className=" h-10 cursor-pointer p-2 text-white bg-orange-primary"
       name="userSelect"
       id="userSelect"
       onChange={handleUserChange}

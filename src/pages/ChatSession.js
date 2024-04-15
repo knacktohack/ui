@@ -98,11 +98,11 @@ const ChatSession = () => {
               key={index}
               className={
                 item.flagged ?
-                "border-2 border-red-500 text-red-500 bg-red-200 max-w-fit rounded-md p-2 mr-32 self-start"
+                "border-2 border-red-500 text-red-500 bg-red-200 max-w-fit  p-2 mr-32 self-start"
                 :
                 item.type === "human"
-                  ? "bg-green-primary max-w-fit rounded-md p-2 ml-32 self-end"
-                  : "border-2 border-green-primary text-green-primary max-w-fit rounded-md p-2 mr-32 self-start"
+                  ? "bg-green-primary max-w-fit  p-2 ml-32 self-end"
+                  : "border-2 border-green-primary text-green-primary max-w-fit  p-2 mr-32 self-start"
               }
             >
               {item.content}
@@ -113,14 +113,14 @@ const ChatSession = () => {
         <div className="w-9/12 absolute bottom-10 flex flex-row gap-4 pt-6 bg-white ">
           <textarea
             value={prompt}
-            className="border-2 border-green-primary rounded-md w-10/12 h-20 resize-none p-1 px-3 overflow-visible"
+            className="border-2 border-green-primary  w-10/12 h-20 resize-none p-1 px-3 overflow-visible"
             onChange={(e) => {
               setPrompt(e.target.value);
             }}
           />
           <button
             onClick={sendPrompt}
-            className="w-1/12 bg-orange-primary h-10 text-white rounded-md cursor-pointer disabled:bg-orange-200"
+            className="w-1/12 bg-orange-primary h-10 text-white  cursor-pointer disabled:bg-orange-200"
             disabled={prompt.trim() === ""}
           >
             SEND

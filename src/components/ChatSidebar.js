@@ -44,7 +44,7 @@ const ChatSidebar = ({ conversationId, shouldRerender }) => {
           <Link
             key={index}
             to={`/chat/c/${item.conversation_id}`}
-            className={`w-full p-2 border-2 pointer border-orange-primary hover:bg-orange-primary rounded-md transition duration-150 ease-in-out truncate ${
+            className={`w-full p-2 border-2 pointer border-orange-primary hover:bg-orange-primary  transition duration-150 ease-in-out truncate ${
               conversationId === item.conversation_id ? "bg-orange-primary" : ""
             } `}
           >

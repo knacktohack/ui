@@ -176,7 +176,7 @@ const Rules = () => {
       >
         <Box
           sx={style}
-          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll rounded-lg"
+          className=" w-8/12 bg-green-light border-2 border-green-primary flex flex-col justify-start items-start h-4/6 gap-4 p-4 overflow-y-scroll "
         >
           <button
             onClick={async () => {
@@ -189,7 +189,7 @@ const Rules = () => {
               }
               setAddQuestion(temp);
             }}
-            className="p-4 py-1 text-white rounded-md text-center bg-orange-primary  cursor-pointer"
+            className="p-4 py-1 text-white  text-center bg-orange-primary  cursor-pointer"
           >
             {addQuestion
               ? newSampleQuestion === ""
@@ -199,7 +199,7 @@ const Rules = () => {
           </button>
           {addQuestion && (
             <input
-              className="rounded-md px-3 py-2 bg-gray-100 w-full"
+              className=" px-3 py-2 bg-gray-100 w-full"
               placeholder="Enter your new question here..."
               onChange={(e) => setNewSampleQuestion(e.target.value)}
             ></input>
@@ -213,7 +213,7 @@ const Rules = () => {
       </Modal>
       <div className="flex flex-col gap-4 h-full p-4">
         <button
-          className="text-white py-2 px-4 text-xl bg-orange-primary rounded-md w-2/12 self-end"
+          className="text-white py-2 px-4 text-xl bg-orange-primary  w-2/12 self-end"
           onClick={async () => {
             const temp = !addingRule;
 
@@ -231,7 +231,7 @@ const Rules = () => {
           <div className="flex flex-col gap-2">
             {/* Your nice textbox goes here */}
             <textarea
-              className="rounded-md h-20 p-4 bg-gray-100"
+              className=" h-20 p-4 bg-gray-100"
               placeholder="Enter your new rule here..."
               onChange={(e) => setNewRule(e.target.value)}
             ></textarea>
@@ -240,7 +240,7 @@ const Rules = () => {
         {rules.map((item, index) => (
           <div
             key={index}
-            className="w-full flex flex-row justify-between items-center bg-green-light border rounded-md p-4 text-lg font-medium text-neutral-700"
+            className="w-full flex flex-row justify-between items-center bg-green-light border  p-4 text-lg font-medium text-neutral-700"
           >
             {index + 1}
             {". "}
@@ -251,12 +251,12 @@ const Rules = () => {
                 onClick={() => {
                   handleModal(item.question);
                 }}
-                className="text-white mr-4  bg-green-primary px-4 py-1 rounded-md"
+                className="text-white mr-4  bg-green-primary px-4 py-1 "
               >
                 See Sample Questions
               </button>
               <select
-                className="rounded-md h-10 cursor-pointer p-2 text-green-primary"
+                className=" h-10 cursor-pointer p-2 text-green-primary"
                 name="rating"
                 id="rating"
                 defaultValue={item.priority}
@@ -281,14 +281,14 @@ const Rules = () => {
                 </option>
               </select>
               <button
-                className="p-4 py-1 text-white rounded-md text-center bg-orange-primary  00 cursor-pointer"
+                className="p-4 py-1 text-white  text-center bg-orange-primary  00 cursor-pointer"
                 id={item.id}
                 onClick={updateRules}
               >
                 Save
               </button>
               <button
-                className="p-4 py-1 text-white rounded-md text-center bg-orange-primary  00 cursor-pointer"
+                className="p-4 py-1 text-white  text-center bg-orange-primary  00 cursor-pointer"
                 question={item.question}
                 onClick={deleteQuestion}
               >
