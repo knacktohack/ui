@@ -59,13 +59,6 @@ const Rules = () => {
 
   async function deleteQuestion(event) {
 
-    
-    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
-      toast.info("Action is disabled due to resource constraints")
-      return
-    }
-    
-
     const questionName = event.target.getAttribute("question");
     console.log(questionName);
     const obj = {
