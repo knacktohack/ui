@@ -97,7 +97,7 @@ const ChatSession = () => {
             <div
               key={index}
               className={
-                item.flagged ?
+                (item.flagged || item.content.split(' ').slice(-1)[0] === ":Flagged") ?
                 "border-2 border-red-500 text-red-500 bg-red-200 max-w-fit  p-2 mr-32 self-start"
                 :
                 item.type === "human"
