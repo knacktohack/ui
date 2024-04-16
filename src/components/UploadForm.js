@@ -35,11 +35,16 @@ const UploadForm = () => {
   };
 
   const handleRuleFileUpload = async () => {
+    
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+      toast.info("File upload is disabled due to resource constraints")
+      return
+    }
+
     const formData = new FormData();
     formData.append("file", ruleFile);
 
     try {
-      console.log(process.env.SERVER_URI);
       const response = await axios.post(
         `${backendUrl}/upload_rules`,
         formData,
@@ -82,6 +87,12 @@ const UploadForm = () => {
   };
 
   const handleDocFileUpload = async () => {
+
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+      toast.info("File upload is disabled due to resource constraints")
+      return
+    }
+
     const formData = new FormData();
     formData.append("file", docFile);
 

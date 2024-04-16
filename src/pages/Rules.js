@@ -58,6 +58,14 @@ const Rules = () => {
   }, []);
 
   async function deleteQuestion(event) {
+
+    
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+      toast.info("Action is disabled due to resource constraints")
+      return
+    }
+    
+
     const questionName = event.target.getAttribute("question");
     console.log(questionName);
     const obj = {
@@ -85,6 +93,14 @@ const Rules = () => {
   }
 
   async function updateRules(event) {
+
+    
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+      toast.info("Action is disabled due to resource constraints")
+      return
+    }
+    
+
     const questionId = event.target.id;
     const rating = event.target.previousElementSibling.value;
     const obj = {
@@ -111,6 +127,12 @@ const Rules = () => {
   }
 
   const addQuestionPost = async ()=>  {
+
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+      toast.info("Action is disabled due to resource constraints")
+      return
+    }
+
     const obj = {
       'question': question,
       'sample_question':newSampleQuestion
@@ -131,6 +153,12 @@ const Rules = () => {
   }
 
   async function addRule() {
+    
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+      toast.info("Action is disabled due to resource constraints")
+      return
+    }
+    
     const obj = {
       rule: newRule,
     };
