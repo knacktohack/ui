@@ -303,8 +303,8 @@ const Admin = () => {
             <div className="flex flex-row justify-between items-center w-full text-3xl font-medium text-neutral-600 mb-3">
               Recent Potential Threats
             </div>
-            <div className="flex flex-col gap-3">
-              {potentialThreats.slice(0, 4).map((item, index) => (
+            <div className="flex flex-col gap-3 overflow-y-scroll">
+              {potentialThreats.map((item, index) => (
                 <div
                   key={item.id}
                   className="flex flex-row justify-between items-center p-4 bg-white  shadow-md hover:shadow-lg transition duration-300"
@@ -337,11 +337,6 @@ const Admin = () => {
                 </div>
               ))}
             </div>
-            {potentialThreats.length > 4 && (
-              <div className="bg-orange-primary text-white text-xl max-w-fit mt-4  p-4 py-2 tracking-wider">
-                See All
-              </div>
-            )}
           </div>
           <div className="w-full flex flex-row h-2/6 justify-center items-center  border-2 px-6 py-4 gap-10 ">
             <div className="flex flex-col justify-evenly items-center w-4/12 gap-5">
