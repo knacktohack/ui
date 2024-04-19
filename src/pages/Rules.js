@@ -60,7 +60,7 @@ const Rules = () => {
   async function deleteQuestion(event) {
 
     
-    if(process.env.REACT_APP_DISABLE_SERVICES==='true'){
+    if(process.env.REACT_APP_DISABLE_SERVICES==='true' || process.env.REACT_APP_DISABLE_SERVICES==='false'){
       toast.info("Action is disabled due to resource constraints")
       return
     }
